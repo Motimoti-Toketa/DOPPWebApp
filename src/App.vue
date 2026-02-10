@@ -23,14 +23,14 @@ const isLoaded = ref(false);
 // 複数の音源ファイルを「名前」で管理します
 const players = new Tone.Players({
   // --- ここに自分のファイルを指定します ---
-  "A": "public/sounds/frag_A2.wav",
-  "B": "public/sounds/frag_B2.wav",
-  "C": "public/sounds/frag_C2.wav",
-  "D": "public/sounds/frag_D2.wav",
-  "E": "public/sounds/frag_E2.wav",
-  "F": "public/sounds/frag_F2.wav",
-  "G": "public/sounds/frag_G2.wav",
-  "H": "public/sounds/frag_H2.wav",  
+  "A": "sounds/frag_A2.wav",
+  "B": "sounds/frag_B2.wav",
+  "C": "sounds/frag_C2.wav",
+  "D": "sounds/frag_D2.wav",
+  "E": "sounds/frag_E2.wav",
+  "F": "sounds/frag_F2.wav",
+  "G": "sounds/frag_G2.wav",
+  "H": "sounds/frag_H2.wav",  
 }, {
   onload: () => {
     isLoaded.value = true;
