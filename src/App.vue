@@ -530,7 +530,7 @@ select {
 .btn-delete:hover { background: rgba(255,0,0,0.7); }
 
 .btn-play-from {
-  position: absolute; bottom: 2px; right: 2px;
+  position: absolute; bottom: 2px;
   background: rgba(255, 255, 255, 0.2); color: white;
   width: auto; padding: 0 6px; height: 20px;
   font-size: 9px; line-height: 20px;
