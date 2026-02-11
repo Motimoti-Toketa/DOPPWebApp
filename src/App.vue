@@ -1,7 +1,10 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue'; // onMountedを追加
 import draggable from 'vuedraggable';
 import * as Tone from 'tone';
+// ■ 追加: driver.js をインポート
+import { driver } from "driver.js";
+import "driver.js/dist/driver.css";
 
 // ■ 1. パレット（素材置き場）の定義
 // ここにある音をドラッグして右側のスペースへ持っていきます
@@ -211,6 +214,61 @@ const downloadWav = (audioBuffer) => {
   function setUint32(data) { view.setUint32(pos, data, true); pos += 4; }
 };
 
+// ■ 追加: チュートリアルを実行する関数
+const startTour = () => {
+  // driverオブジェクトを作成（設定）
+  const tourDriver = driver({
+    showProgress: true, // "1/4" みたいな進捗を表示
+    nextBtnText: '次へ',
+    prevBtnText: '戻る',
+    doneBtnText: '完了',
+    steps: [
+      // ステップ1: パレットの説明
+      { 
+        element: '.sidebar', 
+        popover: { 
+          title: '素材パレット', 
+          description: 'ここにある音（A〜H）を、右側のエリアにドラッグ＆ドロップしてください。', 
+          side: "right", 
+          align: 'start' 
+        } 
+      },
+      // ステップ2: 作業エリアの説明
+      { 
+        element: '.sequencer-wrapper', 
+        popover: { 
+          title: '作業スペース', 
+          description: 'ここに並べた順番で音が再生されます。並べ替えも自由です。', 
+          side: "left", 
+          align: 'start' 
+        } 
+      },
+      // ステップ3: 再生ボタンの説明
+      { 
+        element: '.controls', 
+        popover: { 
+          title: 'コントロール', 
+          description: '並べ終わったら「再生」ボタンを押して聴いてみましょう。「書き出し」でファイル保存もできます。', 
+          side: "bottom", 
+          align: 'start' 
+        } 
+      }
+    ]
+  });
+
+  // ツアー開始！
+  tourDriver.drive();
+};
+
+onMounted(() => {
+  // 少しだけ待ってから開始するとスムーズです
+  setTimeout(() => {
+    // ユーザーが初めてなら…という判定を入れるのも良いですが、
+    // まずは強制的に毎回表示してみましょう
+    startTour();
+  }, 1000);
+});
+
 </script>
 
 <template>
@@ -256,6 +314,10 @@ const downloadWav = (audioBuffer) => {
 
           <button @click="exportAudio" class="btn-export" :disabled="!isLoaded">
           ⬇ 保存
+          </button>
+
+          <button @click="startTour" class="btn-help">
+          ? 使い方
           </button>
           
           </div>
@@ -482,5 +544,17 @@ select {
 }
 .btn-export:hover { background-color: #8e44ad; }
 .btn-export:disabled { background-color: #555; cursor: wait; }
+
+/* 追加: ヘルプボタン */
+.btn-help {
+  background-color: #7f8c8d; /* グレー系 */
+  color: white;
+  border-radius: 50px; /* 丸っこく */
+  padding: 5px 15px;
+  font-size: 0.9rem;
+}
+.btn-help:hover {
+  background-color: #95a5a6;
+}
 
 </style>
